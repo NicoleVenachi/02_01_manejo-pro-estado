@@ -16,7 +16,21 @@ function UseReducer(props) {
     
     const [state, dispatch] = React.useReducer(reducer, initialState)
 
-    
+    const onConfirm = () =>  dispatch({type: actionTypes.confirm})
+
+    const onError = () =>  dispatch({type: actionTypes.error})
+
+    const onWrite = (event) =>{
+        dispatch({ type: actionTypes.write, payload: event.target.value})
+    }
+
+    const onCheck = () =>  dispatch({type: actionTypes.check})
+
+    const onDelete = () =>  dispatch({type: actionTypes.delete})
+
+    const onReset = () =>  dispatch({type: actionTypes.reset})
+
+
     console.log(state.value);
 
     React.useEffect(() => {
@@ -30,10 +44,10 @@ function UseReducer(props) {
                 //si valor es correcto, ni error, ni carga
                 if (state.value === SECURITY_CODE) {
                     //voy a screen de confirmacion
-                    dispatch({ type: actionTypes.confirm })
+                    onConfirm()
                 } else {
                     //Acctivo p de error
-                    dispatch({ type: actionTypes.error })
+                    onError()
                 }
     
                 console.log('Terminando validación');
@@ -62,18 +76,11 @@ function UseReducer(props) {
                 <input 
                     placeholder="Código de Seguridad"
                     value= {state.value}
-                    onChange = {(event) =>{
-                        //aleo el input
-                        dispatch({ type: actionTypes.write, payload: event.target.value})
-                        //onWrite(event.target.value);
-                        
-                    }}
+                    onChange = {onWrite}
                 />
                 <button
-                    onClick={() => {
-                        //validar si el input es correcto
-                        dispatch({ type: actionTypes.check })
-                    }}
+                    //validar si el input es correcto
+                    onClick={onCheck}
                 > Comprobar </button>
             </div>
         );
@@ -88,17 +95,13 @@ function UseReducer(props) {
                 <p> Predimos confirmación, estás segur@? </p>
 
                 <button
-                    onClick={() =>{
-                        //voy a delete screen
-                        dispatch({ type: actionTypes.delete })
-                    }}
+                    //voy a delete screen
+                    onClick={onDelete}
                 > Sí, elinimar </button>
 
                 <button
-                    onClick={() =>{
-                        //vuelvo a overview
-                        dispatch({ type: actionTypes.reset})
-                    }}
+                    //vulevo a overview
+                    onClick={ onReset}
                 > No, me arrepentí </button>
             </React.Fragment>
         )
@@ -111,10 +114,8 @@ function UseReducer(props) {
                 <h2> Eliminar {props.name}</h2>
 
                 <button
-                    onClick={() =>{
-                        //vulevo a overview
-                        dispatch({ type: actionTypes.reset })
-                    }}
+                    //vulevo a overview
+                    onClick={ onReset}
                 > Reseeat, colver atrás </button>
                 
             </React.Fragment>
